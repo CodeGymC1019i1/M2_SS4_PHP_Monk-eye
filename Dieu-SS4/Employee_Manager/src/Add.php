@@ -85,7 +85,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
                 </div>
                 <div class="form-group">
                     <label>Birthday</label>
-                    <input type="text" class="form-control" name="birthday">
+                    <input type="date" class="form-control" name="birthday">
                 </div>
                 <div class="form-group">
                     <label>Address</label>

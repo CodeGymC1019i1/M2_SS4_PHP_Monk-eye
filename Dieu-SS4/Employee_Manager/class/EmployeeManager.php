@@ -49,7 +49,7 @@ class EmployeeManager
             "lastName" => $employee->lastName,
             "birthday" => $employee->birthday,
             "address" => $employee->address,
-            "position" > $employee->position
+            "position" => $employee->position
         ];
         array_push($listEmployee,$employee);
         $this->saveDataToFile($listEmployee);
@@ -63,5 +63,29 @@ class EmployeeManager
 
     }
 
+    public function findById($index){
+        $data = $this->readFile();
+        if(array_key_exists($index,$data)){
+            $employee = new Employee($data[$index]["firstName"],
+                                        $data[$index]["lastName"],
+                                        $data[$index]["birthday"],
+                                        $data[$index]["address"],
+                                        $data[$index]["position"])  ;
+            return $employee;
+        }
+
+    }
+    public function edit($employee,$index){
+        $listEmployee = $this->readFile();
+        $data = [
+            "firstName" => $employee->firstName,
+            "lastName" => $employee->lastName,
+            "birthday" => $employee->birthday,
+            "address" => $employee->address,
+            "position" => $employee->position
+        ];
+        $listEmployee[$index] = $data;
+        $this->saveDataToFile($listEmployee);
+    }
 
 }

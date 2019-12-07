@@ -1,4 +1,4 @@
-oveablepoint<?php
+<?php
 
 use Manage\Employee;
 use Manage\EmployeeManager;
@@ -6,20 +6,19 @@ use Manage\EmployeeManager;
 include_once "../class/EmployeeManager.php";
 include_once "../class/Employee.php";
 $index = (int)$_GET["index"];
-$employeeManager = new EmployeeManager("../data.json");
-$employees = $employeeManager->getList();
+if($_SERVER["REQUEST_METHOD"]=="GET") {
+    $employeeManager = new EmployeeManager("../data.json");
+    $employee = $employeeManager->findById($index);
+}else{
+    $firstName = $_POST["firstName"];
+    $lastName = $_POST["lastName"];
+    $birthday = $_POST["birthday"];
+    $address = $_POST["address"];
+    $position = $_POST["position"];
 
-if($_SERVER["REQUEST_METHOD"]=="POST"){
-
-
-    $employees[$index]->firstName = $_POST["firstName"];
-    $employees[$index]->lastName = $_POST["lastName"];
-    $employees[$index]->birthday = $_POST["birthday"];
-    $employees[$index]->address = $_POST["address"];
-    $employees[$index]->position = $_POST["position"];
-
-    $employeeManager->saveDataToFile($employees);
-
+    $employee = new Employee($firstName,$lastName,$birthday,$address,$position);
+    $employeeManager = new EmployeeManager("../data.json");
+    $employeeManager->edit($employee,$index);
     header("Location: ../index.php");
 }
 
@@ -80,23 +79,23 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
             <form method="post">
                 <div class="form-group">
                     <label>First Name</label>
-                    <input type="text" class="form-control" name="firstName" value="<?php echo $employees[$index]->firstName; ?>">
+                    <input type="text" class="form-control" name="firstName" value="<?php echo $employee->firstName; ?>">
                 </div>
                 <div class="form-group">
                     <label>Last name</label>
-                    <input type="text" class="form-control" name="lastName" value="<?php echo $employees[$index]->lastName; ?>">
+                    <input type="text" class="form-control" name="lastName" value="<?php echo $employee->lastName; ?>">
                 </div>
                 <div class="form-group">
                     <label>Birthday</label>
-                    <input type="text" class="form-control" name="birthday" value="<?php echo $employees[$index]->birthday; ?>">
+                    <input type="date" class="form-control" name="birthday" value="<?php echo $employee->birthday; ?>">
                 </div>
                 <div class="form-group">
                     <label>Address</label>
-                    <input type="text" class="form-control" name="address" value="<?php echo $employees[$index]->address; ?>">
+                    <input type="text" class="form-control" name="address" value="<?php echo $employee->address; ?>">
                 </div>
                 <div class="form-group">
                     <label>Position</label>
-                    <input type="text" class="form-control" name="position" value="<?php echo $employees[$index]->position; ?>">
+                    <input type="text" class="form-control" name="position" value="<?php echo $employee->position; ?>">
                 </div>
 
                 <button type="submit" class="btn btn-primary">Submit</button>
