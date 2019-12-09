@@ -1,25 +1,9 @@
 <?php
+include_once "class/Employee.php";
+include_once "class/EmployeeManager.php";
 
-use Manage\Employee;
-use Manage\EmployeeManager;
-
-if($_SERVER["REQUEST_METHOD"]=="POST"){
-    include_once "../class/EmployeeManager.php";
-    include_once "../class/Employee.php";
-
-    $firstName = $_POST["firstName"];
-    $lastName = $_POST["lastName"];
-    $birthday = $_POST["birthday"];
-    $address = $_POST["address"];
-    $position = $_POST["position"];
-
-    $employee = new Employee($firstName,$lastName,$birthday,$address,$position);
-    $employeeManager = new EmployeeManager("../data.json");
-    $employeeManager->add($employee);
-
-    header("Location: ../index.php");
-}
-
+$employeeManager = new \Manage\EmployeeManager("data.json");
+$employees = $employeeManager->getList();
 ?>
 
 <!doctype html>
@@ -32,12 +16,14 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
     <title>Document</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
 </head>
 <body>
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -50,7 +36,8 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
                     <a class="nav-link" href="#">Link</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Dropdown
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -70,41 +57,47 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
             </form>
         </div>
     </nav>
-
     <div class="row">
-        <div class="col-12">
-            <h1>Add New Employee</h1>
-            <form method="post">
-                <div class="form-group">
-                    <label>First Name</label>
-                    <input type="text" class="form-control" name="firstName">
-                </div>
-                <div class="form-group">
-                    <label>Last name</label>
-                    <input type="text" class="form-control" name="lastName">
-                </div>
-                <div class="form-group">
-                    <label>Birthday</label>
-                    <input type="date" class="form-control" name="birthday">
-                </div>
-                <div class="form-group">
-                    <label>Address</label>
-                    <input type="text" class="form-control" name="address">
-                </div>
-                <div class="form-group">
-                    <label>Position</label>
-                    <input type="text" class="form-control" name="position">
-                </div>
-
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+        <div class="col-12 page-title mb-2 ">
+            <h1>Employees</h1>
+            <button type="button" class="btn btn-outline-primary"><a href="src/Add.php">Create</a></button>
+        </div>
+        <div class="col-12 col-md-12">
+            <table class="table">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Birthday</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Position</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php foreach ($employees as $key => $employee): ?>
+                    <tr>
+                        <th scope="row"><?php echo $key + 1 ?></th>
+                        <td><?php echo $employee->lastName ?></td>
+                        <td><?php echo $employee->firstName ?></td>
+                        <td><?php echo $employee->birthday ?></td>
+                        <td><?php echo $employee->address ?></td>
+                        <td><?php echo $employee->position ?></td>
+                        <td><a href="src/Delete.php?index=<?php echo $key ?>"
+                               onclick="return confirm('Ban chac chan muon xoa khong')"
+                               class="btn btn-danger">Delete</a>
+                            <a href="src/Edit.php?index=<?php echo $key ?>"
+                               class="btn btn-danger">Edit</a></td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
     </div>
+
+
 </div>
-
-
-
-
 
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -118,4 +111,3 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
         crossorigin="anonymous"></script>
 </body>
 </html>
-
