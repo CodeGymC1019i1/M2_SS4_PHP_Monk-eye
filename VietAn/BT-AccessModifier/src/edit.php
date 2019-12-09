@@ -1,26 +1,22 @@
 <?php
 
-use Manage\Employee;
-use Manage\EmployeeManager;
-
 include_once "../class/EmployeeManager.php";
-include_once "../class/Employee.php";
+include_once "../class/Employees.php";
 $index = (int)$_GET["index"];
 $employeeManager = new EmployeeManager("../data.json");
 $employees = $employeeManager->getList();
 
-if($_SERVER["REQUEST_METHOD"]=="POST"){
-
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $employees[$index]->firstName = $_POST["firstName"];
     $employees[$index]->lastName = $_POST["lastName"];
-    $employees[$index]->birthday = $_POST["birthday"];
+    $employees[$index]->birthday = $_POST["birthDay"];
     $employees[$index]->address = $_POST["address"];
-    $employees[$index]->position = $_POST["position"];
+    $employees[$index]->job = $_POST["job"];
 
     $employeeManager->saveDataToFile($employees);
 
-    header("Location: ../index.php");
+    header("Location:../index.php");
 }
 
 ?>
@@ -40,7 +36,8 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -53,7 +50,8 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
                     <a class="nav-link" href="#">Link</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Dropdown
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -80,34 +78,35 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
             <form method="post">
                 <div class="form-group">
                     <label>First Name</label>
-                    <input type="text" class="form-control" name="firstName" value="<?php echo $employees[$index]->firstName; ?>">
+                    <input type="text" class="form-control" name="firstName"
+                           value="<?php echo $employees[$index]->firstName; ?>">
                 </div>
                 <div class="form-group">
                     <label>Last name</label>
-                    <input type="text" class="form-control" name="lastName" value="<?php echo $employees[$index]->lastName; ?>">
+                    <input type="text" class="form-control" name="lastName"
+                           value="<?php echo $employees[$index]->lastName; ?>">
                 </div>
                 <div class="form-group">
                     <label>Birthday</label>
-                    <input type="text" class="form-control" name="birthday" value="<?php echo $employees[$index]->birthday; ?>">
+                    <input type="text" class="form-control" name="birthDay"
+                           value="<?php echo $employees[$index]->birthDay; ?>">
                 </div>
                 <div class="form-group">
                     <label>Address</label>
-                    <input type="text" class="form-control" name="address" value="<?php echo $employees[$index]->address; ?>">
+                    <input type="text" class="form-control" name="address"
+                           value="<?php echo $employees[$index]->address; ?>">
                 </div>
                 <div class="form-group">
-                    <label>Position</label>
-                    <input type="text" class="form-control" name="position" value="<?php echo $employees[$index]->position; ?>">
+                    <label>Job</label>
+                    <input type="text" class="form-control" name="job"
+                           value="<?php echo $employees[$index]->job; ?>">
                 </div>
 
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Edit</button>
             </form>
         </div>
     </div>
 </div>
-
-
-
-
 
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -121,4 +120,3 @@ if($_SERVER["REQUEST_METHOD"]=="POST"){
         crossorigin="anonymous"></script>
 </body>
 </html>
-
